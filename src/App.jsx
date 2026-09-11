@@ -1,16 +1,18 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import ProgressBar from './components/ProgressBar'
-import PalmTrees from './components/PalmTrees'
+import ViceCityScene from './components/ViceCityScene'
 import ChoosePhoto from './components/ChoosePhoto'
 import EditPhoto from './components/EditPhoto'
 import Poster from './components/Poster'
+import { createDefaultPosterReport } from './data/posterReport'
 import './App.css'
 
 function App() {
   const [currentStep, setCurrentStep] = useState(1)
   const [selectedImage, setSelectedImage] = useState(null)
   const [editedImage, setEditedImage] = useState(null)
+  const [posterReport, setPosterReport] = useState(createDefaultPosterReport)
   const [sessionKey, setSessionKey] = useState(0)
 
   const handleEditorSave = ({ dataUrl }) => {
@@ -22,6 +24,7 @@ function App() {
     setCurrentStep(1)
     setSelectedImage(null)
     setEditedImage(null)
+    setPosterReport(createDefaultPosterReport())
     setSessionKey((key) => key + 1)
   }
 
@@ -39,6 +42,8 @@ function App() {
             key={sessionKey}
             selectedImage={selectedImage}
             onSelectImage={setSelectedImage}
+            posterReport={posterReport}
+            onReportChange={setPosterReport}
             onContinue={() => setCurrentStep(2)}
           />
         )
@@ -58,6 +63,7 @@ function App() {
           <Poster
             key={sessionKey}
             editedImage={editedImage}
+            posterReport={posterReport}
             onStartOver={handleStartOver}
           />
         )
@@ -73,45 +79,38 @@ function App() {
       className="app"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 1.2, ease: 'easeOut' }}
+      transition={{ duration: 1, ease: 'easeOut' }}
     >
-      <div className="scene" aria-hidden="true">
-        <div className="sky" />
-        <div className="sun" />
-        <PalmTrees />
-        <div className="grid-container">
-          <div className="grid-floor" />
-        </div>
-        <div className="horizon-glow" />
-      </div>
+      <ViceCityScene />
 
       <div className="app-content">
         <motion.div
           initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.15, ease: 'easeOut' }}
+          transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
         >
           <ProgressBar currentStep={activeStep} />
         </motion.div>
 
         <motion.header
           className={`app-header${isCompactHeader ? ' app-header--compact' : ''}`}
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: -16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3, ease: 'easeOut' }}
+          transition={{ duration: 0.7, delay: 0.2, ease: 'easeOut' }}
         >
-          <h1 className="title">GTA VI WANTED</h1>
+          <p className="app-header__brand">Grand Theft Auto VI</p>
+          <h1 className="title">WANTED</h1>
           <p className="tagline">Create your own wanted poster</p>
         </motion.header>
 
         <motion.main
-          className={`app-main${activeStep === 2 ? ' app-main--editor' : ''}${activeStep === 3 ? ' app-main--poster' : ''}`}
-          initial={{ opacity: 0, y: 24 }}
+          className={`app-main${activeStep === 1 ? ' app-main--choose' : ''}${activeStep === 2 ? ' app-main--editor' : ''}${activeStep === 3 ? ' app-main--poster' : ''}`}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5, ease: 'easeOut' }}
+          transition={{ duration: 0.7, delay: 0.35, ease: 'easeOut' }}
         >
           <div
-            className={`step-panel${activeStep === 2 ? ' step-panel--editor' : ''}${activeStep === 3 ? ' step-panel--poster' : ''}`}
+            className={`step-panel${activeStep === 1 ? ' step-panel--choose' : ''}${activeStep === 2 ? ' step-panel--editor' : ''}${activeStep === 3 ? ' step-panel--poster' : ''}`}
           >
             {renderStep()}
           </div>

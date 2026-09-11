@@ -27,3 +27,13 @@ export function pickRandomBounty() {
   const amount = amounts[Math.floor(Math.random() * amounts.length)]
   return `$${amount.toLocaleString('en-US')}`
 }
+
+export function pickRandomCaseRef() {
+  const year = 26
+  const id = Math.floor(10000 + Math.random() * 90000)
+  return `VCPD-${year}-${id}`
+}
+
+export function pickDangerLevel() {
+  return Math.floor(3 + Math.random() * 3)
+}

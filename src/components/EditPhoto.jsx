@@ -18,11 +18,7 @@ const EDITOR_OPTIONS = {
   },
 }
 
-export default function EditPhoto({
-  selectedImageUrl,
-  onSave,
-  onBack,
-}) {
+export default function EditPhoto({ selectedImageUrl, onSave, onBack }) {
   return (
     <div className="edit-photo">
       <button type="button" className="edit-photo__back" onClick={onBack}>
